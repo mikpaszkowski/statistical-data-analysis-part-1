@@ -1,36 +1,34 @@
 library(anytime)
 library(tidyverse)
+library(ggplot2)
 
-NEW_COLUMN_NAMES <- c("DATE",
-                      "AUSTRIA", "BELGIUM",
-                      "BULGARIA", "CYPRUS",
-                      "CZECH_REPUBLIC", "GERMANY",
-                      "DENMARK", "ESTONIA",
-                      "SPAIN", "FINLAND",
-                      "FRANCE", "UNITED_KINGDOM",
-                      "GREECE", "CROATIA", "HUNGARY",
-                      "IRELAND", "ITALY",
-                      "LITHUANIA", "LUXEMBURG",
-                      "LATVIA", "MALTA",
-                      "NETHERLANDS", "POLAND",
-                      "PORTUGAL", "ROMANIA",
-                      "SWEDEN", "SLOVENIA",
-                      "SLOVAKIA", "EURO_AREA")
+NEW_COLUMN_NAMES <- c("Date",
+                      "austria", "belgium",
+                      "bulgaria", "cyprus",
+                      "czech_republic", "germany",
+                      "denmark", "estonia",
+                      "spain", "finland",
+                      "france", "united_kingdom",
+                      "greece", "croatia", "hungary",
+                      "ireland", "italy",
+                      "lithuania", "luxemburg",
+                      "latvia", "malta",
+                      "netherlands", "poland",
+                      "portugal", "romania",
+                      "sweden", "slovenia",
+                      "slovakia", "euro_area")
 
 
 read_unempl_rate <- function(file, countries = NULL) {
   unemployment_data <- read.csv(file)
   unemployment_data <- unemployment_data[, -2]
-
   colnames(unemployment_data) <- NEW_COLUMN_NAMES
 
-  unemployment_data <- na.omit(unemployment_data)
-  unemployment_data$DATE <- as.Date(unemployment_data$DATE, format = "%Y-%m-%d")
+  unemployment_data$Date <- as.Date(unemployment_data$Date, format = "%Y-%m-%d")
   unemployment_data[, -1] <- sapply(unemployment_data[, -1], as.numeric)
-  head(unemployment_data)
-  # If countries is provided, select only those countries
   if (!is.null(countries)) {
-    unemployment_data <- unemployment_data[, c("DATE", countries), drop = FALSE]
+    unemployment_data <- unemployment_data[, c("Date", countries), drop = FALSE]
   }
+  unemployment_data <- na.omit(unemployment_data)
   return(unemployment_data)
 }
